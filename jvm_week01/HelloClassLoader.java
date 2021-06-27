@@ -1,20 +1,28 @@
 package com.example.datastructor.jvm_01_01;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class HelloClassLoader extends ClassLoader{
 
     public static void main(String[] args) {
 
         try {
-            new HelloClassLoader().findClass("Hello").newInstance().getClass().getMethod("hello");
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            Class<?> helloClass = new HelloClassLoader().findClass("Hello");
+            Method helloMethod = helloClass.getMethod("hello");
+            helloMethod.setAccessible(true);
+            helloMethod.invoke(helloClass.newInstance());
+
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
             e.printStackTrace();
         }
     }
